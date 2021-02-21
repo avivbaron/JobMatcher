@@ -2,25 +2,60 @@ from django.db import models
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=50)
+
+    JAVA_SKILL = 'Java'
+    C_SKILL = 'C'
+    CPP_SKILL = 'C++'
+    SQL_SKILL = 'SQL'
+    NODEJS_SKILL = 'NodeJS'
+    DJANGO_SKILL = 'django'
+    VUEJS_SKILL = 'VueJS'
+    REACT_SKILL = 'React'
+
+
+    CHOICES_SKILL = (
+        (JAVA_SKILL, 'Java'),
+        (C_SKILL, 'C'),
+        (CPP_SKILL, 'C++'),
+        (SQL_SKILL, 'SQL'),
+        (NODEJS_SKILL, 'NodeJS'),
+        (DJANGO_SKILL, 'django'),
+        (VUEJS_SKILL, 'VueJS'),
+        (REACT_SKILL, 'React'),
+    )
+
+    name = models.CharField(max_length=50, choices = CHOICES_SKILL, default = C_SKILL)
 
     def __str__(self):
         return self.name
 
 
 class Job(models.Model):
-    job_title = models.CharField(max_length=50)
-    skill = models.ForeignKey('Skill', null=True, on_delete = models.CASCADE)
+
+    SOFTWARE_DEVELOPER = 'Software Developer'
+    BACKEND_DEVELOPER = 'Back-end Developer'
+    FRONTEND_DEVELOPER = 'Front-end Developer'
+
+    CHOICES_JOB = (
+        (SOFTWARE_DEVELOPER, 'Software Developer'),
+        (BACKEND_DEVELOPER, 'Back-end Developer'),
+        (FRONTEND_DEVELOPER, 'Front-end Developer'),
+    )
+
+    job_title = models.CharField(max_length = 50, choices = CHOICES_JOB, default = SOFTWARE_DEVELOPER)
+    skills = models.ManyToManyField(Skill)
 
     def __str__(self):
-        return self.title
+        return self.job_title
 
 
 
 class Candidate(models.Model):
     title = models.CharField(max_length=50, null=True)
     # exp_years = models.PositiveIntegerField()
-    skill = models.ForeignKey('Skill', related_name='skill', null=True, on_delete = models.CASCADE)
+    # skills = models.ForeignKey('Skill', related_name='skill', null=True, on_delete = models.SET_NULL)
+    skills = models.ManyToManyField(Skill)
+
 
     def __str__(self):
         return self.title

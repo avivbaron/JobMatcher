@@ -3,11 +3,25 @@
 
 {% block content %}
 
-<h1>CHECK</h1>
 
-{{ skill_list }}
-{% for instance in skill_list %}
-    <p>{{ instance.id }} - {{ instance.name }} </p>
-{% endfor %}
+
+
+<table class="table table-striped table-bordered center" style="width:80%">
+        <thead>
+            <tr>
+                <th>job_title</th>
+                <th>skill</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for instance in jobs_list %}
+              <tr>
+                  <td>{{ instance.job_title }}</td>
+                  <td>{{ instance.skill }}</td>
+              </tr>
+          {% endfor %}
+        </tbody>
+</table>
+
 
 {% endblock %}

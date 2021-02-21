@@ -4,9 +4,11 @@ from CandidateFinder.models import Skill, Job, Candidate
 
 
 def index(request):
-    skill_list = Skill.objects.all()
+    candidate_list = Candidate.objects.all()
+    jobs_list = Job.objects.filter(job_title__exact='Back-end')
     context = {
-    "skill_list" : skill_list
+    "candidate_list" : candidate_list ,
+    "jobs_list" : jobs_list
     }
 
     return render(request, 'index.html', context)
