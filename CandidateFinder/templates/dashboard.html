@@ -1,0 +1,37 @@
+
+{% extends 'mainpage.html' %}
+{% load static %}
+{% block content %}
+
+{% include 'status_row.html' %}
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<h5>Candidates: {{total_candidates}}</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Title</th>
+          <th>Skills</th>
+          <th>Job</th>
+
+				</tr>
+				{% for candidate in candidates %}
+					<tr>
+						<td>{{candidate.title}}</td>
+						<td>{{candidate.skills.all}}</td>
+            <td>JOB</td>
+
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+
+
+</div>
+{% endblock content %}

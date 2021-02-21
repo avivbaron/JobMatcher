@@ -24,7 +24,7 @@ class Skill(models.Model):
         (REACT_SKILL, 'React'),
     )
 
-    name = models.CharField(max_length=50, choices = CHOICES_SKILL, default = C_SKILL)
+    name = models.CharField(max_length=50, choices = CHOICES_SKILL, null=True)
 
     def __str__(self):
         return self.name
@@ -52,8 +52,6 @@ class Job(models.Model):
 
 class Candidate(models.Model):
     title = models.CharField(max_length=50, null=True)
-    # exp_years = models.PositiveIntegerField()
-    # skills = models.ForeignKey('Skill', related_name='skill', null=True, on_delete = models.SET_NULL)
     skills = models.ManyToManyField(Skill)
 
 
