@@ -1,0 +1,13 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>CHECK</h1>
+
+{{ skill_list }}
+{% for instance in skill_list %}
+    <p>{{ instance.id }} - {{ instance.name }} </p>
+{% endfor %}
+
+{% endblock %}
