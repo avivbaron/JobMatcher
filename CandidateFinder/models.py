@@ -51,8 +51,13 @@ class Job(models.Model):
 
 
 class Candidate(models.Model):
+    name = models.CharField(max_length=50, null=True)
     title = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=100, null=True)
+    phone = models.CharField(max_length=20, null=True)
+
     skills = models.ManyToManyField(Skill)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
 
 
     def __str__(self):

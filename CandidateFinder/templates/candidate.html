@@ -1,0 +1,46 @@
+{% extends 'mainpage.html' %}
+{% block content %}
+{% load widget_tweaks %}
+
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>{{candidate.name}}</h5>
+			<hr>
+			<a class="btn btn-outline-info  btn-sm btn-block" href="{% url 'update_candidate' candidate.id %}">Update Customer</a>
+			<a class="btn btn-outline-danger  btn-sm btn-block" href="{% url 'delete_candidate' candidate.id %}">Delete Customer</a>
+
+		</div>
+	</div>
+
+  <div class="col-lg">
+    <div class="card card-body">
+      <h5>{{candidate.job}}</h5>
+      <hr>
+      <p style="text-align: center;padding: 10px"> Skills:
+        {% for skill in candidate.skills.all %}
+        {{skill.name}}
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Contact Information</h5>
+			<hr>
+			<p>Email:  {{candidate.email}}</p>
+			<p>Phone:  {{candidate.phone}}</p>
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+{% endblock content %}

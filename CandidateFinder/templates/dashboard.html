@@ -12,19 +12,28 @@
 		<h5>Candidates: {{total_candidates}}</h5>
 		<hr>
 		<div class="card card-body">
-			<a class="btn btn-primary  btn-sm btn-block" href="">Create Customer</a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_candidate' %}">Add Candidate</a>
 			<table class="table table-sm">
 				<tr>
 					<th>Title</th>
           <th>Skills</th>
           <th>Job</th>
+          <th></th>
+          <th></th>
 
 				</tr>
 				{% for candidate in candidates %}
 					<tr>
+            <td><a href="{% url 'candidate' candidate.id %}" class="btn btn-sm btn-info">View</a></td>
 						<td>{{candidate.title}}</td>
-						<td>{{candidate.skills.all}}</td>
-            <td>JOB</td>
+            <td>
+            {% for skill in candidate.skills.all %}
+            {{skill.name}}
+            {% endfor %}
+            </td>
+            <td>{{candidate.job}}</td>
+            <td><a class="btn btn-sm btn-warning" href="{% url 'update_candidate' candidate.id %}">Update</a></td>
+            <td><a class="btn btn-sm btn-danger" href="{% url 'delete_candidate' candidate.id %}">Delete</a></td>
 
 					</tr>
 				{% endfor %}
