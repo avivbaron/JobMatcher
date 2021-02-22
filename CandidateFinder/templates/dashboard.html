@@ -12,6 +12,17 @@
 		<h5>Candidates: {{total_candidates}}</h5>
 		<hr>
 		<div class="card card-body">
+			<div class="row">
+				<div class="col">
+					<div class="card card-body">
+						<form method="get">
+								{{ filter.form }}
+					    <button class="btn btn-primary" type="submit">Search</button>
+					  </form>
+					</div>
+				</div>
+
+			</div>
 			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'create_candidate' %}">Add Candidate</a>
 			<table class="table table-sm">
 				<tr>

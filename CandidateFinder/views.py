@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from CandidateFinder.models import Skill, Job, Candidate
 from . forms import CandidateForm
+from . filters import CandidateFilter
 
 
 def dashboard(request):
@@ -11,9 +12,13 @@ def dashboard(request):
     total_backend = candidates.filter(skills__name__in=['NodeJS', 'django']).count()
     total_frontend = candidates.filter(skills__name__in=['VueJS', 'React']).count()
 
+    myFilter = CandidateFilter(request.GET, queryset=candidates)
+    candidates = myFilter.qs
+
+
     context = {'candidates':candidates, 'jobs':jobs, 'total_candidates':total_candidates,
     'total_software':total_software,'total_backend':total_backend,
-    'total_frontend':total_frontend}
+    'total_frontend':total_frontend, 'filter':myFilter}
 
     return render(request, 'dashboard.html', context)
 
