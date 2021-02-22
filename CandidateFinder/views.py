@@ -2,23 +2,28 @@ from django.shortcuts import render, redirect, get_object_or_404
 from CandidateFinder.models import Skill, Job, Candidate
 from . forms import CandidateForm
 from . filters import CandidateFilter
+from django.db.models import Count, Q
+
+
+#views.py
 
 
 def dashboard(request):
     candidates = Candidate.objects.all().order_by('-skills')
     jobs = Job.objects.all()
     total_candidates = candidates.count()
-    total_software = candidates.filter(skills__name__in=['C++', 'SQL', 'Java', 'C']).count()
-    total_backend = candidates.filter(skills__name__in=['NodeJS', 'django']).count()
-    total_frontend = candidates.filter(skills__name__in=['VueJS', 'React']).count()
+    total_software = candidates.values('id').filter(skills__name__in=['C++', 'SQL', 'Java', 'C']).annotate(total=Count('id')).count()
+    total_backend = candidates.values('id').filter(skills__name__in=['NodeJS', 'django']).annotate(total=Count('id')).count()
+    total_frontend = candidates.values('id').filter(skills__name__in=['VueJS', 'React']).annotate(total=Count('id')).count()
 
-    myFilter = CandidateFilter(request.GET, queryset=candidates)
-    candidates = myFilter.qs
+    q = request.GET['search_query']
+
+    candidates = Candidate.objects.filter(Q(title__icontains=q) | Q(skills__name__icontains=q) | Q(job__job_title__icontains=q)).annotate(total=Count('id'))
 
 
     context = {'candidates':candidates, 'jobs':jobs, 'total_candidates':total_candidates,
     'total_software':total_software,'total_backend':total_backend,
-    'total_frontend':total_frontend, 'filter':myFilter}
+    'total_frontend':total_frontend}
 
     return render(request, 'dashboard.html', context)
 
