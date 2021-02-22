@@ -1,30 +1,28 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from CandidateFinder.models import Skill, Job, Candidate
 from . forms import CandidateForm
-from . filters import CandidateFilter
 from django.db.models import Count, Q
 
 
-#views.py
-
 
 def dashboard(request):
-    candidates = Candidate.objects.all().order_by('-skills')
-    jobs = Job.objects.all()
+    candidates = Candidate.objects.all().order_by('skills').annotate(total=Count('id'))
+    print(candidates.count())
     total_candidates = candidates.count()
     total_software = candidates.values('id').filter(skills__name__in=['C++', 'SQL', 'Java', 'C']).annotate(total=Count('id')).count()
     total_backend = candidates.values('id').filter(skills__name__in=['NodeJS', 'django']).annotate(total=Count('id')).count()
     total_frontend = candidates.values('id').filter(skills__name__in=['VueJS', 'React']).annotate(total=Count('id')).count()
 
-    q = request.GET['search_query']
+    q = request.GET.get('search_query')
+    if q:
+        candidates = Candidate.objects.filter(Q(title__icontains=q) | Q(skills__name__icontains=q) | Q(job__job_title__icontains=q)).annotate(total=Count('id'))
 
-    candidates = Candidate.objects.filter(Q(title__icontains=q) | Q(skills__name__icontains=q) | Q(job__job_title__icontains=q)).annotate(total=Count('id'))
-
-
-    context = {'candidates':candidates, 'jobs':jobs, 'total_candidates':total_candidates,
+    print(candidates.count())
+    context = {'candidates':candidates, 'total_candidates':total_candidates,
     'total_software':total_software,'total_backend':total_backend,
     'total_frontend':total_frontend}
 
+    print(candidates.count())
     return render(request, 'dashboard.html', context)
 
 def candidate(request, pk):
@@ -37,7 +35,7 @@ def candidate(request, pk):
 
 #-------------------(CREATE VIEWS) -------------------
 
-def createOrder(request):
+def createCandidate(request):
 	action = 'create'
 	form = CandidateForm()
 	if request.method == 'POST':
@@ -51,7 +49,7 @@ def createOrder(request):
 
 #-------------------(UPDATE VIEWS) -------------------
 
-def updateOrder(request, pk):
+def updateCandidate(request, pk):
 	action = 'update'
 	candidate = get_object_or_404(Candidate, pk=pk)
 	form = CandidateForm(instance=candidate)
@@ -67,7 +65,7 @@ def updateOrder(request, pk):
 
 #-------------------(DELETE VIEWS) -------------------
 
-def deleteOrder(request, pk):
+def deleteCandidate(request, pk):
 	candidate = Candidate.objects.get(id=pk)
 	if request.method == 'POST':
 		candidate_id = candidate.id

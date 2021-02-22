@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.dashboard, name='dashboard'),
     path('candidate/<str:pk>/', views.candidate, name="candidate"),
-    path('create_order/', views.createOrder, name="create_candidate"),
-    path('update_order/<str:pk>/', views.updateOrder, name="update_candidate"),
-    path('delete_order/<str:pk>/', views.deleteOrder, name="delete_candidate"),
+    path('create_candidate/', views.createCandidate, name="create_candidate"),
+    path('update_candidate/<str:pk>/', views.updateCandidate, name="update_candidate"),
+    path('delete_candidate/<str:pk>/', views.deleteCandidate, name="delete_candidate"),
 ]
