@@ -6,8 +6,8 @@ from django.db.models import Count, Q
 
 
 def dashboard(request):
-    candidates = Candidate.objects.all().order_by('skills').annotate(total=Count('id'))
-    print(candidates.count())
+    candidates = Candidate.objects.all().annotate(total=Count('id'))
+
     total_candidates = candidates.count()
     total_software = candidates.values('id').filter(skills__name__in=['C++', 'SQL', 'Java', 'C']).annotate(total=Count('id')).count()
     total_backend = candidates.values('id').filter(skills__name__in=['NodeJS', 'django']).annotate(total=Count('id')).count()
@@ -17,13 +17,13 @@ def dashboard(request):
     if q:
         candidates = Candidate.objects.filter(Q(title__icontains=q) | Q(skills__name__icontains=q) | Q(job__job_title__icontains=q)).annotate(total=Count('id'))
 
-    print(candidates.count())
+
     context = {'candidates':candidates, 'total_candidates':total_candidates,
     'total_software':total_software,'total_backend':total_backend,
     'total_frontend':total_frontend}
 
-    print(candidates.count())
     return render(request, 'dashboard.html', context)
+
 
 def candidate(request, pk):
     candidate = Candidate.objects.get(id=pk)

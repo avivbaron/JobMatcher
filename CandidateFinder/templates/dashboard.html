@@ -31,9 +31,7 @@
 					<th></th>
 
 				</tr>
-							{{candidates|length}}
 				{% for candidate in candidates %}
-
 				<tr>
 					<td><a href="{% url 'candidate' candidate.id %}" class="btn btn-sm btn-info">View</a></td>
 					<td>{{candidate.title}}</td>
