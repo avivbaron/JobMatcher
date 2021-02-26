@@ -6,7 +6,7 @@ from django.db.models import Count, Q
 
 
 def dashboard(request):
-    candidates = Candidate.objects.all().annotate(total=Count('id'))
+    candidates = Candidate.objects.all().annotate(total=Count('skills')).order_by('-total')
 
     total_candidates = candidates.count()
     total_software = candidates.values('id').filter(skills__name__in=['C++', 'SQL', 'Java', 'C']).annotate(total=Count('id')).count()
